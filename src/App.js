@@ -1,6 +1,6 @@
 // import logo from './logo.svg';
 import './App.css';
-import BasicTable from './components/UserTable'
+import UserTable from './components/UserTable'
 
 function App() {
 
@@ -23,10 +23,8 @@ function App() {
       
       Mafia game
       {/* <Table/> */}
-      lalal
-      <BasicTable/>
-      <BasicTable/>
-      <BasicTable/>
+      <UserTable/>
+      {/* <BasicTable/> */}
     </div>
   );
 }
