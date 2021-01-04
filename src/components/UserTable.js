@@ -24,6 +24,7 @@ class UserTable extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            error: null,
             isLoaded: false,
             users: [],
         }
@@ -59,6 +60,7 @@ class UserTable extends React.Component {
             return <div>Loading...</div>;
         } else {
             return (
+                <div>sometext
                 <TableContainer component={Paper}>
                   <Table styles={{ minWidth: "650" }} aria-label="simple table">
                     <TableHead>
@@ -76,7 +78,7 @@ class UserTable extends React.Component {
                       ))}
                     </TableBody>
                   </Table>
-                </TableContainer>
+                </TableContainer></div>
             );
         }
     }

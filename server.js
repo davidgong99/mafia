@@ -8,6 +8,8 @@ const JSONparser = bodyParser.json();
 
 var users = [];
 
+console.log("I'M NOT LOADING I'M DONE!");
+
 app.get('/ping', function (req,res) {
     return res.send('pong');
 })
