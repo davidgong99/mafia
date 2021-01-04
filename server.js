@@ -4,6 +4,8 @@ const path = require('path');
 const app = express();
 app.use(express.static(path.join(__dirname, 'build')));
 
+var users = [];
+
 app.get('/ping', function (req,res) {
     return res.send('pong');
 })
@@ -13,7 +15,7 @@ app.get('/', function (req, res) {
 })
 
 app.get('/user', function (req,res) {
-    return res.send('user list');
+    return res.send(JSON.stringify(users));
 })
 
 app.put('/user', function (req,res){
