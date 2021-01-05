@@ -37,11 +37,13 @@ class UserTable extends React.Component {
                 (result) => {
                     this.setState({
                         isLoaded: true,
-                        users: result
+                        users: result.users
                     });
                 },
                 // Handle errors here to catch issues with components
                 (error) => {
+                    console.log("error = " + error);
+
                     this.setState({
                         isLoaded: true,
                         error
@@ -52,7 +54,7 @@ class UserTable extends React.Component {
     }
 
     render() {
-        const { error, isLoaded, items } = this.state;
+        const { error, isLoaded, users } = this.state;
         
         if (error) {
             return <div>Error: {error.message} </div>;
@@ -69,10 +71,10 @@ class UserTable extends React.Component {
                       </TableRow>
                     </TableHead>
                     <TableBody>
-                      {items.map((row) => (
-                        <TableRow key={row.name}>
+                      {users.map((row) => (
+                        <TableRow key={row}>
                           <TableCell component="th" scope="row">
-                            {row.name}
+                            {row}
                           </TableCell>
                         </TableRow>
                       ))}

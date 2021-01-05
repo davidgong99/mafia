@@ -19,7 +19,9 @@ app.get('/', function (req, res) {
 })
 
 app.get('/user', function (req,res) {
-    return res.send(JSON.stringify(users));
+    res.setHeader('Content-Type', 'application/json');
+
+    return res.send(JSON.stringify({ "users": users}));
 })
 
 app.put('/user', JSONparser, function (req,res){
