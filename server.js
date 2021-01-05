@@ -1,10 +1,28 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+const cors = require('cors');
 const path = require('path');
 const app = express();
 app.use(express.static(path.join(__dirname, 'build')));
 
 const JSONparser = bodyParser.json();
+app.options('*', cors());
+
+class user {
+    constructor(name, status) {
+        this.name = name;
+        this.status = status;
+    }
+}
+
+function find(user) {
+    for (var i in users) {
+        if (users[i].name === user) {
+            return true;
+        }
+    }
+    return false;
+}
 
 var users = [];
 
@@ -19,44 +37,114 @@ app.get('/', function (req, res) {
 })
 
 app.get('/user', function (req,res) {
-    res.setHeader('Content-Type', 'application/json');
-
-    return res.send(JSON.stringify({ "users": users}));
+    res.setHeader('Content-Type', 'appllication/json');
+    var nameList = [];
+    for (var i in users){
+        nameList.push(users[i].name);
+    }
+    return res.send(JSON.stringify(nameList));
 })
 
 app.put('/user', JSONparser, function (req,res){
+    var payload;
     if (!find(req.body.oldName)){
-        throw new Error(oldName + ' not found in user list');
+        payload = {
+            "response": "User does not exist",
+            "responseCode": "404"
+        };
+        return res.send(JSON.stringify(payload));
     }
         for (var i in users) {
-            if (users[i] == req.body.oldName) {
-                users[i] = req.body.newName;
-                return res.send(req.body.oldName + ' updated to ' + req.body.newName);
+            if (users[i].name === req.body.oldName) {
+                users[i] = new user(req.body.newName, false);
+                payload = {
+                    "response": "User updated",
+                    "responseCode":"200"
+                };
+                return res.send(JSON.stringify(payload));
             }
         }
 })
 
 app.post('/user', JSONparser, function (req,res) {
-    if (find(req.body.name)) {
-        throw new Error('User already exists');
+    var payload;
+    if (find(req.body.name)){
+        payload = {
+            "response": "User already exists",
+            "responseCode": "422"
+        };
+        return res.send(JSON.stringify(payload));
     }
-    users.push(req.body.name);
-    return res.send('added user: '+ req.body.name);
+    users.push(new user(req.body.name, false));
+    payload = {
+        "response": "User added",
+        "responseCode":"200"
+    };
+    return res.send(JSON.stringify(payload));
     
 })
 
-app.delete('/user', function (req,res) {
-    return res.send('delete user');
-})
-
-function find(user) {
-    for (var i in users) {
-        if (users[i] == user) {
-            return true;
+app.delete('/user', JSONparser, function (req,res) {
+    var payload;
+    if (!find(req.body.name)){
+        payload = {
+            "response": "User does not exist",
+            "responseCode": "404"
+        };
+        return res.send(JSON.stringify(payload));
+    }
+    for (var i in users){
+        if (users[i].name === req.body.name){
+            users.splice(i,1);
+            break;
         }
     }
-    return false;
-}
+    payload = {
+        "response": "User deleted",
+        "responseCode":"200"
+    };
+    return res.send(JSON.stringify(payload));
+})
+
+app.post('/ready', JSONparser, function(req,res){
+    var payload;
+    if (!find(req.body.name)){
+        payload = {
+            "response": "User does not exist",
+            "responseCode": "404"
+        };
+        return res.send(JSON.stringify(payload));
+    }
+    for (var i in users){
+        if (users[i].name === req.body.name){
+            users[i].status = true;
+        }
+    }
+    payload = {
+        "response":"Player ready",
+        "responseCode":"200"
+    };
+    return res.send(JSON.stringify(payload));
+})
+
+app.post('/startgame', function(req,res){
+    var payload
+    for (var i in users){
+        if (users[i].status === false){
+            payload = {
+                "response": "Not all players are ready",
+                "responseCode": "400"
+            };
+            return res.send('Player ' + JSON.stringify(users[i].name) + ' is not ready');
+        }
+    }
+    payload = {
+        "response":"Start Game",
+        "responseCode":"200"
+    };
+    return res.send(JSON.stringify(payload));
+    
+})
 
 
 app.listen(process.envPORT || 8080);
