@@ -34,24 +34,24 @@ class UserTable extends React.Component {
         fetch("http://localhost:8080/user", {
           method: "GET",
         })
-            .then(res => res.json())
-            .then(
-                (result) => {
-                    this.setState({
-                        isLoaded: true,
-                        users: result.users
-                    });
-                },
-                // Handle errors here to catch issues with components
-                (error) => {
-                    console.log("error = " + error);
+        .then(res => res.json())
+        .then(
+            (result) => {
+                this.setState({
+                    isLoaded: true,
+                    users: result.users
+                });
+            },
+            // Handle errors here to catch issues with components
+            (error) => {
+                console.log("error = " + error);
 
-                    this.setState({
-                        isLoaded: true,
-                        error
-                    });
-                }
-            );
+                this.setState({
+                    isLoaded: true,
+                    error
+                });
+            }
+        );
             
     }
 
