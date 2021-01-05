@@ -37,12 +37,41 @@ class LoginPage extends React.Component {
     // username can only have letters and numbers
     // max 15 chars
     usernameOnSubmit = (event) => {
-      event.preventDefault();
+      // event.preventDefault();
       
       // var username = this.state.username;
       if (this.state.username.match(/^[A-Za-z]{1,15}$/g)) { // valid match
         console.log("username is valid");
         console.log("submitting username = ", this.state.username);
+        
+        var payload = {
+          "name": this.state.username
+        }
+        
+        
+        fetch("http://localhost:8080/user", {
+          method: "POST",
+          body: JSON.stringify(payload),
+          headers: {
+            "Content-type": "application/json; charset=UTF-8",
+            "Access-Control-Allow-Origin": "*"
+          }
+        })
+        .then(res => res.json())
+        .then(
+          (result) => {
+            console.log("POST returned");
+            console.log(result.response);
+          },
+          (error) => {
+            console.log("POST error: ", error);
+            return;
+          }
+        )
+        
+        console.log("SUBMITTED");
+
+        
       } else {
         // send post request
         console.log("invalid username");
