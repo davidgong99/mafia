@@ -8,6 +8,8 @@ const JSONparser = bodyParser.json();
 
 var users = [];
 
+console.log("I'M NOT LOADING I'M DONE!");
+
 app.get('/ping', function (req,res) {
     return res.send('pong');
 })
@@ -17,7 +19,9 @@ app.get('/', function (req, res) {
 })
 
 app.get('/user', function (req,res) {
-    return res.send(JSON.stringify(users));
+    res.setHeader('Content-Type', 'application/json');
+
+    return res.send(JSON.stringify({ "users": users}));
 })
 
 app.put('/user', JSONparser, function (req,res){
