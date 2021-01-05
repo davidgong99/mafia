@@ -31,7 +31,9 @@ class UserTable extends React.Component {
     }
     
     componentDidMount() {
-        fetch("http://localhost:8080/user")
+        fetch("http://localhost:8080/user", {
+          method: "GET",
+        })
             .then(res => res.json())
             .then(
                 (result) => {

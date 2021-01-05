@@ -20,16 +20,17 @@ app.get('/', function (req, res) {
 
 app.get('/user', function (req,res) {
     res.setHeader('Content-Type', 'application/json');
+    res.setHeader('Access-Control-Allow-Origin', '*')
 
     return res.send(JSON.stringify({ "users": users}));
 })
 
 app.put('/user', JSONparser, function (req,res){
     if (!find(req.body.oldName)){
-        throw new Error(oldName + ' not found in user list');
+        throw new Error(req.body.oldName + ' not found in user list');
     }
         for (var i in users) {
-            if (users[i] == req.body.oldName) {
+            if (users[i] === req.body.oldName) {
                 users[i] = req.body.newName;
                 return res.send(req.body.oldName + ' updated to ' + req.body.newName);
             }
@@ -51,7 +52,7 @@ app.delete('/user', function (req,res) {
 
 function find(user) {
     for (var i in users) {
-        if (users[i] == user) {
+        if (users[i] === user) {
             return true;
         }
     }
