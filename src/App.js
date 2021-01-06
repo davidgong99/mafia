@@ -2,6 +2,7 @@
 import './App.css';
 import UserTable from './components/UserTable'
 import LoginPage from './components/LoginPage'
+import StartButton from './components/StartButton'
 
 import Button from '@material-ui/core/Button'
 
@@ -26,7 +27,7 @@ function App() {
         <br/>
         <Button variant="contained">I am ready</Button>
         <br/>
-        <Button variant="contained">Start game</Button>
+        <StartButton/>
         
       </div>
       
