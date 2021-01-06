@@ -1,13 +1,19 @@
-const express = require('express');
-const cors = require('cors')
-const bodyParser = require('body-parser');
-const path = require('path');
-const morgan = require('morgan');
+import express from 'express';
+import cors from 'cors';
+import logger from 'morgan';
+import bodyParser from 'body-parser';
+
+// importing routes
+import indexRouter from './server/routes/index.js'
+import userRouter from './server/routes/user.js'
+
+import User from './server/models/User.js'
+
 
 const app = express();
-app.use(express.static(path.join(__dirname, 'build')));
+// app.use(express.static(path.join(__dirname, 'build')));
 
-app.use(morgan("dev"))
+app.use(logger("dev"))
 app.options('*', cors()) // include before other routes
 /** Get port from environment and store in Express. */
 const port = process.env.PORT || "8080";
@@ -15,12 +21,7 @@ const port = process.env.PORT || "8080";
 const JSONparser = bodyParser.json();
 app.options('*', cors());
 
-class user {
-    constructor(name, status) {
-        this.name = name;
-        this.status = status;
-    }
-}
+
 
 function find(user) {
     for (var i in users) {
@@ -35,13 +36,18 @@ var users = [];
 
 console.log("I'M NOT LOADING I'M DONE!");
 
+
+app.use("/", indexRouter);
+app.use("/users", userRouter)
+
+
 app.get('/ping', function (req,res) {
     return res.send('pong');
 })
 
-app.get('/', function (req, res) {
-    res.sendFile(path.join(__dirname, 'build', 'index.html'));
-})
+// app.get('/', function (req, res) {
+//     res.sendFile(path.join(__dirname, 'build', 'index.html'));
+// })
 
 app.get('/user', function (req,res) {
     console.log("GET /user");
@@ -66,7 +72,7 @@ app.put('/user', JSONparser, function (req,res){
     }
         for (var i in users) {
             if (users[i].name === req.body.oldName) {
-                users[i] = new user(req.body.newName, false);
+                users[i] = new User(req.body.newName, false);
                 payload = {
                     "response": "User updated",
                     "responseCode":"200"
@@ -87,7 +93,7 @@ app.post('/user', JSONparser, function (req,res) {
         };
         return res.send(JSON.stringify(payload));
     }
-    users.push(new user(req.body.name, false));
+    users.push(new User(req.body.name, false));
     payload = {
         "response": "User added",
         "responseCode":"200"
@@ -177,3 +183,4 @@ app.listen(port);
 app.on("listening", () => {
     console.log(`Listening on : http://localhost:${port}/`)
 })
+
