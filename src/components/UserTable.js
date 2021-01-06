@@ -7,6 +7,8 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 
+import ReadyButton from './ReadyButton';
+
   
 // function createData(name, calories, fat, carbs, protein) {
 //     return { name, calories, fat, carbs, protein };
@@ -31,25 +33,27 @@ class UserTable extends React.Component {
     }
     
     componentDidMount() {
-        fetch("http://localhost:8080/user")
-            .then(res => res.json())
-            .then(
-                (result) => {
-                    this.setState({
-                        isLoaded: true,
-                        users: result.users
-                    });
-                },
-                // Handle errors here to catch issues with components
-                (error) => {
-                    console.log("error = " + error);
+        fetch("http://localhost:8080/user", {
+          method: "GET",
+        })
+        .then(res => res.json())
+        .then(
+            (result) => {
+                this.setState({
+                    isLoaded: true,
+                    users: result.users
+                });
+            },
+            // Handle errors here to catch issues with components
+            (error) => {
+                console.log("error = " + error);
 
-                    this.setState({
-                        isLoaded: true,
-                        error
-                    });
-                }
-            );
+                this.setState({
+                    isLoaded: true,
+                    error
+                });
+            }
+        );
             
     }
 
@@ -62,19 +66,26 @@ class UserTable extends React.Component {
             return <div>Loading...</div>;
         } else {
             return (
-                <div>sometext
+                <div>
                 <TableContainer component={Paper}>
                   <Table styles={{ minWidth: "650" }} aria-label="simple table">
                     <TableHead>
                       <TableRow>
                         <TableCell align="center">User list</TableCell>
+                        <TableCell align="center">Ready</TableCell>
+
                       </TableRow>
+                      
                     </TableHead>
                     <TableBody>
-                      {users.map((row) => (
-                        <TableRow key={row}>
-                          <TableCell component="th" scope="row">
-                            {row}
+                      {users.map((username) => (
+                        <TableRow key={username}>
+                          <TableCell align="center" component="th" scope="row">
+                            {username}
+                          </TableCell>
+                          <TableCell align="center" component="th" scope="row">
+                            <ReadyButton username={username}/>
+                            {/* Todo add username as prop to button */}
                           </TableCell>
                         </TableRow>
                       ))}
