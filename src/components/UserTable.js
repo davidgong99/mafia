@@ -39,6 +39,7 @@ class UserTable extends React.Component {
         .then(res => res.json())
         .then(
             (result) => {
+              console.log("GET result: ", result);
                 this.setState({
                     isLoaded: true,
                     users: result.users
@@ -78,13 +79,13 @@ class UserTable extends React.Component {
                       
                     </TableHead>
                     <TableBody>
-                      {users.map((username) => (
-                        <TableRow key={username}>
+                      {users.map((name) => (
+                        <TableRow key={name}>
                           <TableCell align="center" component="th" scope="row">
-                            {username}
+                            {name}
                           </TableCell>
                           <TableCell align="center" component="th" scope="row">
-                            <ReadyButton username={username}/>
+                            <ReadyButton username={name}/>
                             {/* Todo add username as prop to button */}
                           </TableCell>
                         </TableRow>

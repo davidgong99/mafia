@@ -1,7 +1,6 @@
 const express = require('express');
 const cors = require('cors')
 const bodyParser = require('body-parser');
-const cors = require('cors');
 const path = require('path');
 const app = express();
 app.use(express.static(path.join(__dirname, 'build')));
@@ -48,7 +47,8 @@ app.get('/user', function (req,res) {
     for (var i in users){
         nameList.push(users[i].name);
     }
-    return res.send(JSON.stringify(nameList));
+    return res.send(JSON.stringify({"users": nameList}));
+    // return res.send(JSON.stringify(nameList));
 })
 
 app.put('/user', JSONparser, function (req,res){
@@ -115,6 +115,8 @@ app.delete('/user', JSONparser, function (req,res) {
 })
 
 app.post('/ready', JSONparser, function(req,res){
+    res.setHeader('Content-Type', 'application/json');
+    res.setHeader('Access-Control-Allow-Origin', '*');
     var payload;
     if (!find(req.body.name)){
         payload = {
@@ -136,6 +138,8 @@ app.post('/ready', JSONparser, function(req,res){
 })
 
 app.post('/startgame', function(req,res){
+    res.setHeader('Content-Type', 'application/json');
+    res.setHeader('Access-Control-Allow-Origin', '*');
     var payload
     for (var i in users){
         if (users[i].status === false){
@@ -143,7 +147,7 @@ app.post('/startgame', function(req,res){
                 "response": "Not all players are ready",
                 "responseCode": "400"
             };
-            return res.send('Player ' + JSON.stringify(users[i].name) + ' is not ready');
+            return res.send(JSON.stringify(payload));
 
         }
     }
