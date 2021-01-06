@@ -37,7 +37,7 @@ app.get('/', function (req, res) {
 })
 
 app.get('/user', function (req,res) {
-    res.setHeader('Content-Type', 'appllication/json');
+    res.setHeader('Content-Type', 'application/json');
     var nameList = [];
     for (var i in users){
         nameList.push(users[i].name);
