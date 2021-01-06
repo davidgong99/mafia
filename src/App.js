@@ -1,30 +1,36 @@
 // import logo from './logo.svg';
 import './App.css';
 import UserTable from './components/UserTable'
+import LoginPage from './components/LoginPage'
+import StartButton from './components/StartButton'
+
+import Button from '@material-ui/core/Button'
 
 function App() {
 
   return (
     <div className="App">
-      {/* <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header> */}
+      <div style={{ padding: "10%" }}>
+        Mafia game
+
+        <div  style={{ "borderStyle": "dotted" }}>
+          <h2>User list table</h2>
+          <UserTable/>
+        </div>
+        
+        
+        {/* Buttons */}
+        <div  style={{ "borderStyle": "dotted" }}>
+          <h2>Login page</h2>
+          <LoginPage/>
+        </div>
+        <br/>
+        <Button variant="contained">I am ready</Button>
+        <br/>
+        <StartButton/>
+        
+      </div>
       
-      Mafia game
-      {/* <Table/> */}
-      <UserTable/>
-      {/* <BasicTable/> */}
     </div>
   );
 }

@@ -1,9 +1,13 @@
 const express = require('express');
+const cors = require('cors')
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const path = require('path');
 const app = express();
 app.use(express.static(path.join(__dirname, 'build')));
+
+app.options('*', cors()) // include before other routes
+
 
 const JSONparser = bodyParser.json();
 app.options('*', cors());
@@ -37,7 +41,9 @@ app.get('/', function (req, res) {
 })
 
 app.get('/user', function (req,res) {
+    console.log("GET /user");
     res.setHeader('Content-Type', 'application/json');
+    res.setHeader('Access-Control-Allow-Origin', '*');
     var nameList = [];
     for (var i in users){
         nameList.push(users[i].name);
@@ -67,6 +73,8 @@ app.put('/user', JSONparser, function (req,res){
 })
 
 app.post('/user', JSONparser, function (req,res) {
+    res.setHeader('Content-Type', 'application/json');
+    res.setHeader('Access-Control-Allow-Origin', '*');
     var payload;
     if (find(req.body.name)){
         payload = {
@@ -136,6 +144,7 @@ app.post('/startgame', function(req,res){
                 "responseCode": "400"
             };
             return res.send('Player ' + JSON.stringify(users[i].name) + ' is not ready');
+
         }
     }
     payload = {
