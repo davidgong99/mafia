@@ -2,11 +2,15 @@ const express = require('express');
 const cors = require('cors')
 const bodyParser = require('body-parser');
 const path = require('path');
+const morgan = require('morgan');
+
 const app = express();
 app.use(express.static(path.join(__dirname, 'build')));
 
+app.use(morgan("dev"))
 app.options('*', cors()) // include before other routes
-
+/** Get port from environment and store in Express. */
+const port = process.env.PORT || "8080";
 
 const JSONparser = bodyParser.json();
 app.options('*', cors());
@@ -159,5 +163,17 @@ app.post('/startgame', function(req,res){
     
 })
 
+/** catch 404 and forward to error handler */
+app.use('*', (req, res) => {
+    return res.status(404).json({
+      success: false,
+      message: 'API endpoint doesnt exist'
+    })
+});
 
-app.listen(process.envPORT || 8080);
+
+app.listen(port);
+
+app.on("listening", () => {
+    console.log(`Listening on : http://localhost:${port}/`)
+})
