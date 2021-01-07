@@ -10,10 +10,10 @@ router
   .post('/login/:userId', encode, (req, res, next) => {
     return res
         .status(200)
-        .json({
+        .send(JSON.stringify({
             success: true,
             authoization: req.authToken,
-        });
+        }));
   });
 
 export default router;
