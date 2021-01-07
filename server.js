@@ -17,6 +17,7 @@ app.use(logger("dev"))
 app.options('*', cors()) // include before other routes
 /** Get port from environment and store in Express. */
 const port = process.env.PORT || "8080";
+app.set("port", port);
 
 const JSONparser = bodyParser.json();
 app.options('*', cors());
